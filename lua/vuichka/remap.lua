@@ -1,35 +1,9 @@
 vim.g.mapleader = " "
 vim.g.localmapleader = " "
 
-local modes = { 'n', 'v' }
-
-for _, mode in ipairs(modes) do
-  vim.keymap.set(mode, 'h', 'n', { desc = 'goto_next' })
-  vim.keymap.set(mode, 'j', 'o', { desc = 'insert left' })
-  vim.keymap.set(mode, 'k', 'i', { desc = 'Go to end of the word' })
-  vim.keymap.set(mode, 'l', 'e', { desc = 'insert next line' })
-
-  vim.keymap.set(mode, 'n', 'h', { desc = 'left' })
-  vim.keymap.set(mode, 'e', 'j', { desc = 'down' })
-  vim.keymap.set(mode, 'i', 'k', { desc = 'up' })
-  vim.keymap.set(mode, 'o', 'l', { desc = 'right' })
-end
-
--- for _, mode in ipairs(modes) do
---   vim.keymap.set(mode, 'H', 'N', { desc = '' })
---   vim.keymap.set(mode, 'J', 'E', { desc = '' })
---   vim.keymap.set(mode, 'K', 'I', { desc = '' })
---   vim.keymap.set(mode, 'L', 'O', { desc = '' })
---
---   vim.keymap.set(mode, 'N', 'H', { desc = 'goto_prev' })
---   vim.keymap.set(mode, 'E', 'J', { desc = 'delete indent' })
---   vim.keymap.set(mode, 'I', 'K', { desc = 'lookup manual' })
---   vim.keymap.set(mode, 'O', 'L', { desc = 'insert next line' })
--- end
-
 -- Centers while swiping page
-vim.keymap.set('n', '<C-d>', '<C-d>zz')
-vim.keymap.set('n', '<C-u>', '<C-u>zz')
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { silent = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { silent = true })
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
@@ -37,10 +11,57 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+
+-- Colemak NEIO navigation remaps with which-key descriptions
+
+-- Basic navigation remaps
+vim.keymap.set({ 'n', 'v' }, 'n', 'h', { desc = "Move left", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'e', 'j', { desc = "Move down", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'i', 'k', { desc = "Move up", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'o', 'l', { desc = "Move right", noremap = true })
+
+-- Remap displaced keys
+vim.keymap.set({ 'n', 'v' }, 'h', 'n', { desc = "Next search result", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'H', 'N', { desc = "Previous search result", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'j', 'e', { desc = "End of word", noremap = true })
+vim.keymap.set({ 'n', 'v' }, 'J', 'E', { desc = "End of WORD", noremap = true })
+vim.keymap.set('n', 'k', 'i', { desc = "Insert mode", noremap = true })
+vim.keymap.set('n', 'K', 'I', { desc = "Insert at line start", noremap = true })
+vim.keymap.set('n', 'l', 'o', { desc = "Open line below", noremap = true })
+vim.keymap.set('n', 'L', 'O', { desc = "Open line above", noremap = true })
+
+-- Windows remap for Colemak
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.api.nvim_set_keymap('n', '<leader>w', '<C-w>', { desc = 'window' })
+
+-- Window mappings with descriptions for which-key
+vim.keymap.set('n', '<leader>wn', '<C-W>h', { desc = 'Go to left window' })
+vim.keymap.set('n', '<leader>we', '<C-W>j', { desc = 'Go to window below' })
+vim.keymap.set('n', '<leader>wi', '<C-W>k', { desc = 'Go to window above' })
+vim.keymap.set('n', '<leader>wo', '<C-W>l', { desc = 'Go to right window' })
+vim.keymap.set('n', '<leader>wp', '<C-W>p', { desc = 'Go to previous window' })
+vim.keymap.set('n', '<leader>ww', '<C-W>w', { desc = 'Go to next window' })
+vim.keymap.set('n', '<leader>wW', '<C-W>W', { desc = 'Go to previous window' })
+
+vim.keymap.set('n', '<leader>ws', '<C-W>s', { desc = 'Split horizontally' })
+vim.keymap.set('n', '<leader>wv', '<C-W>v', { desc = 'Split vertically' })
+vim.keymap.set('n', '<leader>wq', '<C-W>q', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>wc', '<C-W>c', { desc = 'Close window' })
+vim.keymap.set('n', '<leader>wt', '<C-W>o', { desc = 'Only this window' })
+
+vim.keymap.set('n', '<leader>w+', '<C-W>+', { desc = 'Increase height' })
+vim.keymap.set('n', '<leader>w-', '<C-W>-', { desc = 'Decrease height' })
+vim.keymap.set('n', '<leader>w<', '<C-W><', { desc = 'Decrease width' })
+vim.keymap.set('n', '<leader>w>', '<C-W>>', { desc = 'Increase width' })
+vim.keymap.set('n', '<leader>w=', '<C-W>=', { desc = 'Equal windows' })
+
+vim.keymap.set('n', '<leader>wN', '<C-W>H', { desc = 'Move to far left' })
+vim.keymap.set('n', '<leader>wE', '<C-W>J', { desc = 'Move to bottom' })
+vim.keymap.set('n', '<leader>wI', '<C-W>K', { desc = 'Move to top' })
+vim.keymap.set('n', '<leader>wO', '<C-W>L', { desc = 'Move to far right' })
+
+vim.keymap.set('n', '<leader>wr', '<C-W>r', { desc = 'Rotate clockwise' })
+vim.keymap.set('n', '<leader>wR', '<C-W>R', { desc = 'Rotate counter-clockwise' })
+vim.keymap.set('n', '<leader>wx', '<C-W>x', { desc = 'Exchange windows' })
+vim.keymap.set('n', '<leader>wT', '<C-W>T', { desc = 'Move to new tab' })

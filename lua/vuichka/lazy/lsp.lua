@@ -1,5 +1,6 @@
 return {
 	'neovim/nvim-lspconfig',
+	lazy = false,
 	dependencies = {
 		'williamboman/mason.nvim',
 		'williamboman/mason-lspconfig.nvim',
@@ -16,54 +17,51 @@ return {
 	config = function()
 		local cmp = require 'cmp'
 		local cmp_lsp = require 'cmp_nvim_lsp'
-		local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
-			cmp_lsp.default_capabilities())
+		-- local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
+		-- cmp_lsp.default_capabilities())
+
+
+
+		vim.lsp.config('lua_ls', {
+			settings = {
+				Lua = {
+					runtime = {
+						version = 'LuaJIT',
+					},
+					diagnostics = {
+						globals = {
+							'vim',
+							'require',
+						},
+					},
+				},
+			}
+		})
+
+		vim.lsp.config('gopls', {
+			settings = {
+				gopls = {
+					hints = {
+						assignVariableTypes = true,
+						compositeLiteralFields = true,
+						compositeLiteralTypes = true,
+						constantValues = true,
+						functionTypeParameters = true,
+						parameterNames = true,
+						rangeVariableTypes = true,
+					},
+				},
+			},
+		})
+
+		vim.lsp.config('protols', {
+			filetypes = { 'proto' }
+		})
 
 		require('fidget').setup {}
 		require('mason').setup()
-		require('mason-lspconfig').setup {
-			ensure_installed = {
-				'lua_ls',
-				'rust_analyzer',
-				'gopls',
-				'html',
-			},
-			handlers = {
-				function(server_name) -- default handler (optional)
-					require('lspconfig')[server_name].setup {
-						capabilities = capabilities,
-					}
-				end,
-
-				['lua_ls'] = function()
-					local lspconfig = require 'lspconfig'
-					lspconfig.lua_ls.setup {
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								runtime = { version = 'Lua 5.1' },
-								diagnostics = {
-									globals = { 'vim', 'it', 'describe', 'before_each', 'after_each' },
-								},
-							},
-						},
-					}
-				end,
-				['gopls'] = function()
-					local lspconfig = require 'lspconfig'
-					lspconfig.gopls.setup {
-						capabilities = capabilities,
-						filetypes = { 'go' },
-					}
-				end,
-				['html'] = function()
-					local lspconfig = require 'lspconfig'
-					lspconfig.html.setup {
-						capabilities = capabilities,
-						filetypes = { 'html', 'templ' },
-					}
-				end,
-			},
+		require("mason-lspconfig").setup {
+			ensure_installed = { 'lua_ls', 'gopls' },
 		}
 
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }

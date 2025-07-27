@@ -48,15 +48,18 @@ return { -- Fuzzy Finder (files, lsp, etc)
 			-- You can put your default mappings / updates / etc. in here
 			--  All the info you're looking for is in `:help telescope.setup()`
 			--
-			-- defaults = {
-			--   mappings = {
-			--     n = {
-			--       ['e'] = require('telescope.actions').move_selection_previous,
-			--       ['i'] = require('telescope.actions').move_selection_next,
-			--     },
-			--   },
-			-- },
-			-- pickers = {}
+			defaults = {
+				layout_strategy = 'horizontal',
+				layout_config = { height = 100 }
+			},
+			pickers = {
+				find_files = { hidden = true, no_ignore = true },
+				live_grep = { glob_pattern = "!*.pb.*" },
+				lsp_references = { show_line = false },
+				lsp_implementations = { show_line = false },
+				lsp_workspace_symbols = { show_line = false }
+
+			},
 			extensions = {
 				['ui-select'] = {
 					require('telescope.themes').get_dropdown(),
@@ -74,13 +77,16 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
 		vim.keymap.set('n', '<leader>p', builtin.find_files, { desc = '[S]earch [F]iles' })
 		vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-		vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+		vim.keymap.set('n', '<leader>sw', builtin.lsp_workspace_symbols, { desc = '[S]earch [W]orkspace Symbols' })
 		vim.keymap.set('n', '<leader>ss', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+		vim.keymap.set('n', '<leader>s.', builtin.resume, { desc = '[S]earch [C]urrent picker' })
 		vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+		vim.keymap.set('n', '<leader>sg', builtin.git_status, { desc = '[S]tatus [G]it' })
 		vim.keymap.set('n', '<leader>sr', builtin.lsp_references, { desc = '[S]earch [R]eferences' })
 		vim.keymap.set('n', '<leader>si', builtin.lsp_implementations, { desc = '[S]earch [I]mplementations' })
-		vim.keymap.set('n', '<leader>s.', builtin.quickfix, { desc = '[S]earch quickfix)' })
+		vim.keymap.set('n', '<leader>sq', builtin.quickfix, { desc = '[S]earch quickfix)' })
 		vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
 
 		-- Slightly advanced example of overriding default behavior and theme
 		vim.keymap.set('n', '<leader>/', function()
