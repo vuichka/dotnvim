@@ -5,6 +5,7 @@ vim.g.have_nerd_font = true
 
 vim.opt.guicursor = ''
 vim.opt.colorcolumn = '80'
+vim.opt.textwidth = 80
 vim.opt.termguicolors = true
 
 vim.opt.nu = true

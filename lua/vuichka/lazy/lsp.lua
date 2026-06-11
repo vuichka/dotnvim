@@ -17,8 +17,10 @@ return {
 	config = function()
 		local cmp = require 'cmp'
 		local cmp_lsp = require 'cmp_nvim_lsp'
-		-- local capabilities = vim.tbl_deep_extend('force', {}, vim.lsp.protocol.make_client_capabilities(),
-		-- cmp_lsp.default_capabilities())
+		local capabilities = vim.tbl_deep_extend('force',
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			cmp_lsp.default_capabilities())
 
 
 
@@ -39,8 +41,11 @@ return {
 		})
 
 		vim.lsp.config('gopls', {
+			root_markers = { 'go.mod', '.git' },
 			settings = {
 				gopls = {
+					buildFlags = { "-tags=unit,test" },
+					["build.expandWorkspaceToModule"] = true,
 					hints = {
 						assignVariableTypes = true,
 						compositeLiteralFields = true,
@@ -55,14 +60,24 @@ return {
 		})
 
 		vim.lsp.config('protols', {
-			filetypes = { 'proto' }
+			cmd = { 'protols' },
+			filetypes = { 'proto' },
+			root_markers = { "buf.work.yaml", ".git" },
 		})
 
 		require('fidget').setup {}
-		require('mason').setup()
-		require("mason-lspconfig").setup {
-			ensure_installed = { 'lua_ls', 'gopls' },
-		}
+		require('mason').setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗"
+				}
+			},
+		})
+		require("mason-lspconfig").setup({
+			ensure_installed = { 'lua_ls', 'gopls', 'protols' },
+		})
 
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 

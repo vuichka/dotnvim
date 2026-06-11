@@ -2,6 +2,7 @@ require 'vuichka.set'
 require 'vuichka.remap'
 require 'vuichka.lazy_init'
 require 'vuichka.after.colemak'
+require 'vuichka.printer_print'
 
 
 -- -- [[ Basic Autocommands ]]

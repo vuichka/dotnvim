@@ -53,8 +53,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
 				layout_config = { height = 100 }
 			},
 			pickers = {
-				find_files = { hidden = true, no_ignore = true },
-				live_grep = { glob_pattern = "!*.pb.*" },
+				find_files = { hidden = true, no_ignore = false },
+				live_grep = { glob_pattern = "!{**/*.pb.**}" },
 				lsp_references = { show_line = false },
 				lsp_implementations = { show_line = false },
 				lsp_workspace_symbols = { show_line = false }
@@ -77,7 +77,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
 		vim.keymap.set('n', '<leader>p', builtin.find_files, { desc = '[S]earch [F]iles' })
 		vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-		vim.keymap.set('n', '<leader>sw', builtin.lsp_workspace_symbols, { desc = '[S]earch [W]orkspace Symbols' })
+		vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch [W]ord' })
 		vim.keymap.set('n', '<leader>ss', builtin.live_grep, { desc = '[S]earch by [G]rep' })
 		vim.keymap.set('n', '<leader>s.', builtin.resume, { desc = '[S]earch [C]urrent picker' })
 		vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
